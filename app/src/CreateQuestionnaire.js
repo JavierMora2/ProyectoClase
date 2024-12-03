@@ -22,7 +22,7 @@ export const CreateQuestionnaire = () => {
 
   const [createQuestionnaire, setCreateQuestionnaire] = useState({
     title: "Cuestionario vacio",
-    description: "Descripcion simple",
+    description: "Cuestionario vacio",
     questions: [
       {
         title: "Pregunta sin titulo",
@@ -31,12 +31,19 @@ export const CreateQuestionnaire = () => {
         isMandatory: false,
       },
     ],
+    userId: JSON.parse(localStorage.user)._id,
   });
 
   const onChangeTitle = (e) => {
     e.preventDefault();
     const data = createQuestionnaire;
     data.title = e.target.value;
+    setCreateQuestionnaire({ ...data });
+  };
+
+  const onChangeDescription = (e) => {
+    const data = createQuestionnaire;
+    data.description = e.target.value;
     setCreateQuestionnaire({ ...data });
   };
 
@@ -78,7 +85,7 @@ export const CreateQuestionnaire = () => {
     setCreateQuestionnaire({ ...data });
   };
 
-  const sendData = async () => {
+  const onSubmit = async () => {
     try {
       const res = await axios.post(
         "htpps://localhost:400/Questionnaire/createQuestionnaire",
@@ -113,6 +120,7 @@ export const CreateQuestionnaire = () => {
           <Form.Control
             placeholder="Agrega una descripcion"
             name="descripcion"
+            onChange={onChangeDescription}
           />
         </Card.Body>
       </Card>
@@ -189,7 +197,7 @@ export const CreateQuestionnaire = () => {
         <Col>
           <Row>
             <Col className="text-center">
-              <Button variant="success" onClick={() => sendData()}>
+              <Button variant="success" onClick={() => onSubmitData()}>
                 Guardar cuestionario
               </Button>
             </Col>

@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { AnswerModel } from "../models/AnswerModel";
 import { OptionModel } from "../models/OptionsModel";
 import { QuestionModel } from "../models/QuestionModel";
+import { UserModel } from "../models/UserModel";
 import { QuestionnaireModel } from "../models/QuestionnaireModel";
 
 export const createQuestionnaire = async (req: Request, res: Response): Promise<void> => {
@@ -16,12 +17,23 @@ export const createQuestionnaire = async (req: Request, res: Response): Promise<
             })
             return
         }
+        if (!title || !description || !userId) {
+            res.status(400).json({ msg: "Faltan datos para crear el cuestionario" })
+            return;
+        }
+        
         const questionnaire = await QuestionnaireModel.create({
             title,
             description,
             userId,
         });
 
+        const user = await  UserModel.findById(userId);
+        if(!user){
+            res.status(400).json({msg:"El usuario que intenta crear la actividad no existe"})
+            return;
+        }
+        
         res.status(200).json({msg: "cuestionario creado on exito", questionnaire})
         return;
     } catch (error) {

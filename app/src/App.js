@@ -17,9 +17,11 @@ const App = () => {
   const onSubmit = async () => {
     //Peticion a la DB
     try {
-      await axios.post("http://localhost:4000/users/singin", data);
-      alert("Inicio de sesion exitoso");
-      navigate("/home");
+      const res = await axios.post("http://localhost:4000/users/singin", data);
+      const user = res.data.user;
+      user.logined = true;
+      localStorage.user = JSON.stringify(user);
+      navigate("/list-q");
     } catch (error) {
       alert("Datos incorrectos", error);
     }

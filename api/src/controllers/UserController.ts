@@ -38,7 +38,7 @@ export const registerUsers = async (req: Request, rest: Response): Promise<void>
             rol
         })
 
-        const token = jwt.sign(JSON.stringify(user), "Chansawman");
+        const token = jwt.sign(JSON.stringify(user), "Eltigre");
 
         rest.status(200).json({
             msg: "Usuaro registrado con exito", token
